@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// Configuración de conexión a SQL Server
+// 🔹 Configuración de conexión a SQL Server
 const dbConfig = {
     user: "root",
     password: "root",
@@ -15,7 +15,35 @@ const dbConfig = {
     options: { encrypt: false, trustServerCertificate: true }
 };
 
-// Endpoint para guardar los datos en la base de datos
+// 🔹 Función para crear la tabla si no existe
+async function crearTablaSiNoExiste() {
+    try {
+        let pool = await sql.connect(dbConfig);
+        await pool.request().query(`
+            IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'CRISTIAN_CLIMA')
+            BEGIN
+                CREATE TABLE CRISTIAN_CLIMA (
+                    id INT IDENTITY(1,1) PRIMARY KEY,
+                    ciudad VARCHAR(100),
+                    pais VARCHAR(50),
+                    descripcion VARCHAR(255),
+                    temperatura FLOAT,
+                    humedad INT,
+                    presion INT,
+                    fecha DATETIME DEFAULT GETDATE()
+                );
+            END
+        `);
+        console.log("✅ Tabla CRISTIAN_CLIMA verificada/creada correctamente.");
+    } catch (error) {
+        console.error("❌ Error al verificar/crear la tabla:", error);
+    }
+}
+
+// 🔹 Llamar a la función al iniciar el servidor
+crearTablaSiNoExiste();
+
+// 🔹 Endpoint para guardar datos del clima
 app.post("/guardarClima", async (req, res) => {
     const { ciudad, pais, descripcion, temperatura, humedad, presion } = req.body;
 
@@ -31,14 +59,14 @@ app.post("/guardarClima", async (req, res) => {
             .query(`INSERT INTO CRISTIAN_CLIMA (ciudad, pais, descripcion, temperatura, humedad, presion) 
                     VALUES (@ciudad, @pais, @descripcion, @temperatura, @humedad, @presion)`);
 
-        res.json({ message: "Clima guardado exitosamente" });
+        res.json({ message: "🌦 Clima guardado exitosamente" });
     } catch (error) {
-        console.error("Error en la BD:", error);
+        console.error("❌ Error en la BD:", error);
         res.status(500).json({ message: "Error al guardar en la base de datos" });
     }
 });
 
-// Iniciar el servidor en el puerto 3000
+// 🔹 Iniciar el servidor en el puerto 3000
 app.listen(3000, () => {
-    console.log("Servidor corriendo en http://localhost:3000");
+    console.log("✅ Servidor corriendo en http://localhost:3000");
 });
