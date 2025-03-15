@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clima en tu Ciudad</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        button { padding: 10px 20px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        .result { margin-top: 20px; }
+        .result h2 { color: #333; }
+        .result p { font-size: 18px; }
+    </style>
+</head>
+<body>
+
+    <h1>Consulta el Clima Actual</h1>
+    <p>Introduce el nombre de una ciudad y presiona "Obtener Clima" para ver el clima actual.</p>
+
+    <input type="text" id="city" placeholder="Ciudad">
+    <button id="getWeather">Obtener Clima</button>
+    <button id="saveWeather">Guardar en Base de Datos</button>
+
+    <div id="result" class="result"></div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
