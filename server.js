@@ -28,7 +28,7 @@ app.post("/guardarClima", async (req, res) => {
             .input("temperatura", sql.Float, temperatura)
             .input("humedad", sql.Int, humedad)
             .input("presion", sql.Int, presion)
-            .query(`INSERT INTO Clima (ciudad, pais, descripcion, temperatura, humedad, presion) 
+            .query(`INSERT INTO CRISTIAN_CLIMA (ciudad, pais, descripcion, temperatura, humedad, presion) 
                     VALUES (@ciudad, @pais, @descripcion, @temperatura, @humedad, @presion)`);
 
         res.json({ message: "Clima guardado exitosamente" });
